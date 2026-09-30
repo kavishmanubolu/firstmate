@@ -83,6 +83,7 @@ After that bootstrap, every non-doctor `fm-on.sh` target runs through that worke
 It never runs in the SSH process or a Herdr pane.
 Linux uses the same queue and worker protocol without the Aqua-session requirement.
 When idle, the worker checks for newly staged work about once per second; after a lane starts or finishes it checks more frequently for a short period.
+Active-command and result waits use a separate sampling interval; the [`fm-remote-job-lib.sh` header](../bin/fm-remote-job-lib.sh) owns its defaults, overrides, and completion, cancellation, and timeout latency contract.
 
 ### Job lanes and preemption
 
