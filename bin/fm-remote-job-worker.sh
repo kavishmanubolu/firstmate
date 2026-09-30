@@ -739,7 +739,7 @@ worker_run_with_timeout() { # <job-dir> <seconds> <command> [args...]
       fi
       next_check=$((SECONDS + 1))
     fi
-    sleep "$FM_REMOTE_JOB_POLL_SECONDS"
+    sleep "$FM_REMOTE_JOB_ACTIVE_POLL_SECONDS"
   done
   wait "$group_pid" 2>/dev/null
   rc=$?
