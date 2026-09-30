@@ -23,7 +23,7 @@
 # worker's orphan recovery.
 #
 # The serving loop does not busy-poll an idle queue. After a lane starts or is
-# reaped it rescans every FM_REMOTE_JOB_POLL_SECONDS for 20 passes, so a home
+# reaped it rescans every FM_REMOTE_JOB_POLL_SECONDS for four passes, so a home
 # whose lane just finished starts its next job promptly; otherwise it sleeps
 # one second between passes. That bound is how long newly staged or cancelled
 # work, a lane that died, an orphaned claim, or an expired queue deadline can
@@ -61,7 +61,7 @@ FM_REMOTE_JOB_ORPHAN_GRACE_SECONDS=$(worker_bounded_setting "${FM_REMOTE_JOB_ORP
 FM_REMOTE_JOB_SUPERVISOR_MAX_RESTARTS=$(worker_bounded_setting "${FM_REMOTE_JOB_SUPERVISOR_MAX_RESTARTS:-}" 20)
 FM_REMOTE_JOB_SUPERVISOR_MAX_BACKOFF_SECONDS=$(worker_bounded_setting "${FM_REMOTE_JOB_SUPERVISOR_MAX_BACKOFF_SECONDS:-}" 5)
 FM_REMOTE_JOB_SUPERVISOR_HEALTHY_SECONDS=$(worker_bounded_setting "${FM_REMOTE_JOB_SUPERVISOR_HEALTHY_SECONDS:-}" 10)
-WORKER_FAST_PASSES=20
+WORKER_FAST_PASSES=4
 WORKER_IDLE_WAIT_SECONDS=1
 WORKER_SWEEP_SECONDS=60
 

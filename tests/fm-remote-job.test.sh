@@ -172,14 +172,15 @@ SH
   HOME="$ACCOUNT_HOME" "$BASH" "$REMOTE_ROOT/bin/fm-remote-job-worker.sh" > "$poll_dir/worker.log" 2>&1 &
   pid=$!
   for ((i = 0; i < 200; i++)); do
-    grep -qx "$dispatch" "$FM_POLL_SLEEP_LOG" && break
+    grep -qx 1 "$FM_POLL_SLEEP_LOG" && break
     /bin/sleep 0.05
   done
-  grep -qx "$dispatch" "$FM_POLL_SLEEP_LOG" || fail "$label dispatcher lost its $dispatch-second cadence"
+  grep -qx 1 "$FM_POLL_SLEEP_LOG" || fail "$label dispatcher never reached its one-second quiet wait"
+  [ "$(grep -cx "$dispatch" "$FM_POLL_SLEEP_LOG")" -eq 4 ] || fail "$label dispatcher did not limit its fast burst to four $dispatch-second waits"
   kill -TERM "$pid" || fail "$label dispatcher stopped unexpectedly"
   wait "$pid" 2>/dev/null || true
   pid=''
-  pass "$label: result and command samples use $expected seconds while dispatcher uses $dispatch"
+  pass "$label: result and command samples use $expected seconds; dispatcher uses four $dispatch-second waits then one second"
 )
 poll_cadence_case default '' '' 0.25 0.05 || exit 1
 poll_cadence_case legacy 0.07 '' 0.07 0.07 || exit 1
