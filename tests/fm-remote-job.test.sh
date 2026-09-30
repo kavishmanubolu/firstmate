@@ -122,7 +122,9 @@ SH
   chmod +x "$poll_dir/bin/sleep"
   trap '[ -z "$pid" ] || { kill -TERM "$pid" 2>/dev/null || true; wait "$pid" 2>/dev/null || true; }' EXIT
   unset FM_REMOTE_JOB_POLL_SECONDS FM_REMOTE_JOB_ACTIVE_POLL_SECONDS
+  # shellcheck disable=SC2030 # The legacy override is local to this cadence fixture.
   [ -z "$legacy" ] || export FM_REMOTE_JOB_POLL_SECONDS="$legacy"
+  # shellcheck disable=SC2030 # The active override is local to this cadence fixture.
   [ -z "$active" ] || export FM_REMOTE_JOB_ACTIVE_POLL_SECONDS="$active"
   export FM_REMOTE_JOB_STATE_ROOT="$poll_dir/state" FM_ROOT_OVERRIDE="$REMOTE_ROOT"
   # shellcheck disable=SC2030 # Each cadence fixture owns its subshell's bounds.
