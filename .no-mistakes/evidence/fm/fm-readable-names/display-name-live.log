@@ -1,0 +1,34 @@
+lab session: fm-lab-fm-dn-live-66792-1662
+== S1 derived name drops repeated project prefix, title-cases words ==
+workspace label: └ Sidebar Names · p:a8NwO9goZxu1LZUSZ8Js1w
+task tab label:  fm-wheelhouse-sidebar-names
+record: Sidebar Names
+PASS - S1 derived label is '└ Sidebar Names · p:<token>'
+PASS - S1 task tab keeps exact fm-<id>
+== S2 explicit --display-name wins over derived ==
+workspace label: └ Merge Boss · p:BtoyxOSdq7fkjplTK_yoTQ
+PASS - S2 explicit display name wins
+== S3 adversarial: name forging ' · p:' separator and overlong text is sanitized ==
+workspace label: └ Evil p · p:5yMis6o9HKg4NLpEAI-XZw
+token parsed back from live title: 5yMis6o9HKg4NLpEAI-XZw (journal token 5yMis6o9HKg4NLpEAI-XZw)
+PASS - S3 title parses to the real token only; name 'Evil p' (6 chars <= 28)
+== S4 adversarial: --display-name with nothing label-safe refuses before any state ==
+stderr: error: --display-name holds nothing usable as a presentation label; give at least one letter or digit
+PASS - S4 refused with no task state created
+stderr: error: --display-name requires a non-empty value
+PASS - S4b empty --display-name= refused
+== S5 teardown retires the display-name record with its journal and workspace ==
+PASS - S5 wheelhouse-sidebar-names: record, journal, and workspace gone
+PASS - S5 wheelhouse-merge-conductor: record, journal, and workspace gone
+PASS - S5 forge-attempt: record, journal, and workspace gone
+== S6 existing workspace is never renamed: a pre-existing legacy-labeled workspace survives a new spawn ==
+new worker label: └ After Legacy · p:mIlK7-A-wdFkIctVdLerGQ
+legacy workspace label after spawn: └ legacy-task · p:BBBBBBBBBBBBBBBBBBBBBB
+PASS - S6 legacy label untouched
+PASS - S6 legacy label still parses to its token
+-- full sidebar listing --
+firstmate
+└ legacy-task · p:BBBBBBBBBBBBBBBBBBBBBB
+└ After Legacy · p:mIlK7-A-wdFkIctVdLerGQ
+FAILS=0
+lab teardown: ok
