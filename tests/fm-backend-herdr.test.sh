@@ -3090,6 +3090,13 @@ test_projection_display_name_derives_readable_names_with_distinguishing_words_fi
   # Dropping the prefix must never consume the whole name.
   out=$(bash -c '. "$0/bin/backends/herdr.sh"; fm_backend_herdr_projection_display_name_derive uacode uacode' "$ROOT")
   [ "$out" = "Uacode" ] || fail "a task id equal to its project lost its name: $out"
+  # A project given as an alias or path whose last segment differs from the
+  # task id's prefix still drops it through the resolved clone's name.
+  out=$(bash -c '. "$0/bin/backends/herdr.sh"; fm_backend_herdr_projection_display_name_derive uacode-merge-conductor ua /srv/projects/uacode' "$ROOT")
+  [ "$out" = "Merge Conductor" ] || fail "an aliased project kept its clone-name prefix: $out"
+  # Only one segment is ever dropped, even when several candidates match.
+  out=$(bash -c '. "$0/bin/backends/herdr.sh"; fm_backend_herdr_projection_display_name_derive uacode-uacode-sync uacode /srv/projects/uacode' "$ROOT")
+  [ "$out" = "Uacode Sync" ] || fail "matching candidates dropped more than one segment: $out"
   # No project argument leaves the whole task id as words.
   out=$(bash -c '. "$0/bin/backends/herdr.sh"; fm_backend_herdr_projection_display_name_derive uacode-merge-conductor' "$ROOT")
   [ "$out" = "Uacode Merge Conductor" ] || fail "projectless derivation was wrong: $out"
@@ -3115,6 +3122,24 @@ test_projection_display_name_sanitize_cannot_forge_the_label_grammar() {
   out=$(bash -c '. "$0/bin/backends/herdr.sh"; fm_backend_herdr_projection_display_name_sanitize "···"' "$ROOT" 2>/dev/null)
   status=$?
   [ "$status" -ne 0 ] || fail "a display name with no usable character was accepted as '$out'"
+  # Punctuation alone is not a readable name either.
+  out=$(bash -c '. "$0/bin/backends/herdr.sh"; fm_backend_herdr_projection_display_name_sanitize "###"' "$ROOT" 2>/dev/null)
+  status=$?
+  [ "$status" -ne 0 ] || fail "a punctuation-only display name was accepted as '$out'"
+  out=$(bash -c '. "$0/bin/backends/herdr.sh"; fm_backend_herdr_projection_display_name_sanitize "#1"' "$ROOT")
+  [ "$out" = "#1" ] || fail "a display name holding one digit was refused or changed: $out"
+  # The spawn refuses such a name up front, before any endpoint or record exists.
+  mkdir -p "$TMP_ROOT/display-name-spawn/home"
+  out=$(FM_HOME="$TMP_ROOT/display-name-spawn/home" "$ROOT/bin/fm-spawn.sh" dn-refuse-x1 \
+    "$TMP_ROOT/display-name-spawn/project" --display-name '###' 2>&1)
+  status=$?
+  [ "$status" -ne 0 ] || fail "spawn accepted a punctuation-only --display-name"
+  case "$out" in
+  *"give at least one letter or digit"*) ;;
+  *) fail "spawn did not name the display-name refusal: $out" ;;
+  esac
+  [ ! -e "$TMP_ROOT/display-name-spawn/home/state/dn-refuse-x1.herdr-display-name" ] \
+    || fail "a refused display name still published a record"
   # Over-long input is trimmed on a word boundary rather than mid-word.
   out=$(bash -c '. "$0/bin/backends/herdr.sh"; fm_backend_herdr_projection_display_name_sanitize "alpha bravo charlie delta echo foxtrot golf"' "$ROOT")
   [ "${#out}" -le 28 ] || fail "display name exceeded its budget: $out"

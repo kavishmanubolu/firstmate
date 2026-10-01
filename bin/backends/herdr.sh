@@ -788,7 +788,7 @@ fm_backend_herdr_projection_display_name_path() {  # <state-dir> <task-id>
 }
 
 # fm_backend_herdr_projection_display_name_sanitize: reduce one candidate
-# display name to a single label-safe line, or fail when nothing survives.
+# display name to a single label-safe line, or fail when no letter or digit survives.
 # ':' and U+00B7 are replaced rather than escaped, because the label grammar
 # finds its token after the LAST " · p:" separator and refuses a title holding a
 # second "p:" occurrence; a display name able to forge either would make a
@@ -813,7 +813,12 @@ fm_backend_herdr_projection_display_name_sanitize() {  # <raw>
     fi
     out=${out% }
   fi
-  [ -n "$out" ] || return 1
+  # Punctuation alone is not a readable name, so at least one letter or digit
+  # has to survive.
+  case "$out" in
+  *[A-Za-z0-9]*) ;;
+  *) return 1 ;;
+  esac
   printf '%s' "$out"
 }
 
@@ -848,24 +853,28 @@ fm_backend_herdr_projection_display_name_titlecase() {  # <words>
 # one shared prefix - the exact condition that makes workers indistinguishable.
 # The drop is skipped when nothing would remain, so a task id that is only the
 # project name still keeps a name.
-# The project argument is optional and accepts a registry name or a clone path.
-fm_backend_herdr_projection_display_name_derive() {  # <task-id> [project]
-  local task=$1 project=${2:-} base rest lower plower
+# Project arguments are optional and each accepts a registry name or a clone
+# path. Several may be given because the project a spawn was asked for can be an
+# alias or path whose last segment differs from the resolved clone's name; the
+# first candidate that names the leading segment wins, and only one segment is
+# ever dropped.
+fm_backend_herdr_projection_display_name_derive() {  # <task-id> [project...]
+  local task=$1 project base lower plower
+  shift
   base=$(fm_backend_herdr_projection_concise_task_label "$task")
-  if [ -n "$project" ]; then
+  lower=$(printf '%s' "$base" | LC_ALL=C tr '[:upper:]' '[:lower:]')
+  for project in "$@"; do
     project=${project%/}
     project=${project##*/}
-    if [ -n "$project" ]; then
-      lower=$(printf '%s' "$base" | LC_ALL=C tr '[:upper:]' '[:lower:]')
-      plower=$(printf '%s' "$project" | LC_ALL=C tr '[:upper:]' '[:lower:]')
-      case "$lower" in
-      "$plower"-?*)
-        rest=${base:$((${#project} + 1))}
-        [ -z "$rest" ] || base=$rest
-        ;;
-      esac
-    fi
-  fi
+    [ -n "$project" ] || continue
+    plower=$(printf '%s' "$project" | LC_ALL=C tr '[:upper:]' '[:lower:]')
+    case "$lower" in
+    "$plower"-?*)
+      base=${base:$((${#project} + 1))}
+      break
+      ;;
+    esac
+  done
   base=${base//-/ }
   base=$(fm_backend_herdr_projection_display_name_sanitize "$base") || return 1
   fm_backend_herdr_projection_display_name_titlecase "$base"

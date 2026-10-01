@@ -269,12 +269,12 @@ The display name therefore leads with the words that distinguish one worker from
 A spawn resolves it once, in this order:
 
 1. An explicit `bin/fm-spawn.sh --display-name <name>` value wins.
-2. Otherwise one is derived from the task id: owner prefixes are stripped, one repeated leading `<project>-` segment is dropped, dashes and underscores become spaces, and each word is capitalized.
+2. Otherwise one is derived from the task id: owner prefixes are stripped, one repeated leading `<project>-` segment is dropped (matched against the project as the spawn was given it and against the resolved clone's directory name, so an alias or path still drops it), dashes and underscores become spaces, and each word is capitalized.
 
 The resolved name is published as a `state/<id>.herdr-display-name` record after the journal is created, so a refused journal never rewrites the name an existing workspace was labeled from.
 It is published before the label is built, because every later re-derivation of the label happens during restart discovery, long after the spawn arguments are gone.
 The record is presentation-only and is retired with its journal, never before it.
-A name that cannot become a label is refused at spawn; a record that is absent, symlinked, empty, multi-line, or holds nothing label-safe falls back to the task-id-derived name rather than stranding the label.
+A name with no letter or digit left after sanitizing is refused at spawn; a record that is absent, symlinked, empty, multi-line, or holds no letter or digit falls back to the task-id-derived name rather than stranding the label.
 
 `:` and `·` are removed from a display name rather than escaped, so no name can spell a second `· p:` separator or a second `p:` occurrence and make a title's token ambiguous.
 A name longer than the budget is trimmed on a word boundary.

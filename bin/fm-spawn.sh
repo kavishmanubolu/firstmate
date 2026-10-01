@@ -3744,7 +3744,7 @@ else
             if [ "$DISPLAY_NAME_SET" -eq 1 ]; then
               HERDR_DISPLAY_NAME=$DISPLAY_NAME_ARG
             else
-              HERDR_DISPLAY_NAME=$(fm_backend_herdr_projection_display_name_derive "$ID" "$PROJ" 2>/dev/null || true)
+              HERDR_DISPLAY_NAME=$(fm_backend_herdr_projection_display_name_derive "$ID" "$PROJ" "$PROJ_ABS" 2>/dev/null || true)
             fi
             if [ -n "$HERDR_DISPLAY_NAME" ]; then
               fm_backend_herdr_projection_display_name_record \
