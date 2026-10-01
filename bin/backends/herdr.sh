@@ -806,11 +806,11 @@ fm_backend_herdr_projection_display_name_sanitize() {  # <raw>
   out=${out% }
   [ -n "$out" ] || return 1
   if [ "${#out}" -gt "$FM_BACKEND_HERDR_PRESENTATION_DISPLAY_NAME_MAX" ]; then
-    out=${out:0:$FM_BACKEND_HERDR_PRESENTATION_DISPLAY_NAME_MAX}
-    cut=${out% *}
-    if [ "$cut" != "$out" ] && [ -n "$cut" ]; then
-      out=$cut
+    cut=${out:0:$FM_BACKEND_HERDR_PRESENTATION_DISPLAY_NAME_MAX}
+    if [ "${out:$FM_BACKEND_HERDR_PRESENTATION_DISPLAY_NAME_MAX:1}" != ' ' ] && [ -n "${cut% *}" ]; then
+      cut=${cut% *}
     fi
+    out=$cut
     out=${out% }
   fi
   # Punctuation alone is not a readable name, so at least one letter or digit

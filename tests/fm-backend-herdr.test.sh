@@ -3147,6 +3147,8 @@ test_projection_display_name_sanitize_cannot_forge_the_label_grammar() {
   *' ') fail "trimmed display name kept a trailing space: [$out]" ;;
   esac
   [ "$out" = "alpha bravo charlie delta" ] || fail "word-boundary trim was wrong: $out"
+  out=$(bash -c '. "$0/bin/backends/herdr.sh"; fm_backend_herdr_projection_display_name_sanitize "Fix Sidebar Label Truncation Bug"' "$ROOT")
+  [ "$out" = "Fix Sidebar Label Truncation" ] || fail "a cut landing on a word boundary dropped a whole word: $out"
   pass "herdr display names: sanitizing cannot forge the token grammar and trims on words"
 }
 
