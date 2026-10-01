@@ -271,7 +271,12 @@ fm_herdr_cleanup_one() { # <session> <workspace> <title> <home-real>
       && [ "$FM_HERDR_CLEANUP_BOUND_TAB" = "$bound_tab" ] \
       && [ "$FM_HERDR_CLEANUP_BOUND_PANE" = "$bound_pane" ] \
       && [ ! -e "$STATE/$id.meta" ] && [ ! -L "$STATE/$id.meta" ]; then
-      rm -f -- "$journal" || fm_herdr_cleanup_warn "$id pane closed but its journal could not be retired"
+      if rm -f -- "$journal"; then
+        rm -f -- "$(fm_backend_herdr_projection_display_name_path "$STATE" "$id")" \
+          || fm_herdr_cleanup_warn "$id journal retired but its display-name record could not be removed"
+      else
+        fm_herdr_cleanup_warn "$id pane closed but its journal could not be retired"
+      fi
     else
       fm_herdr_cleanup_warn "$id pane closed but its journal changed and was preserved"
     fi
