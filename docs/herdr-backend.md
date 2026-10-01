@@ -271,7 +271,8 @@ A spawn resolves it once, in this order:
 1. An explicit `bin/fm-spawn.sh --display-name <name>` value wins.
 2. Otherwise one is derived from the task id: owner prefixes are stripped, one repeated leading `<project>-` segment is dropped, dashes and underscores become spaces, and each word is capitalized.
 
-The resolved name is published as a `state/<id>.herdr-display-name` record after the journal is created, so a refused journal never rewrites the name an existing workspace was labeled from. It is published before the label is built, because every later re-derivation of the label happens during restart discovery, long after the spawn arguments are gone.
+The resolved name is published as a `state/<id>.herdr-display-name` record after the journal is created, so a refused journal never rewrites the name an existing workspace was labeled from.
+It is published before the label is built, because every later re-derivation of the label happens during restart discovery, long after the spawn arguments are gone.
 The record is presentation-only and is retired with its journal, never before it.
 A name that cannot become a label is refused at spawn; a record that is absent, symlinked, empty, multi-line, or holds nothing label-safe falls back to the task-id-derived name rather than stranding the label.
 
