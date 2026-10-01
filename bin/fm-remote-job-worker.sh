@@ -25,9 +25,10 @@
 # The serving loop does not busy-poll an idle queue. After a lane starts or is
 # reaped it rescans every FM_REMOTE_JOB_POLL_SECONDS for four passes, so a home
 # whose lane just finished starts its next job promptly; otherwise it sleeps
-# one second between passes. That bound is how long newly staged or cancelled
-# work, a lane that died, an orphaned claim, or an expired queue deadline can
-# wait for the next pass, and it refreshes the readiness heartbeat about once
+# one second between passes. Work arriving after the four-pass burst may wait
+# for that quiet scan. Newly staged or cancelled work, a lane that died, an
+# orphaned claim, or an expired queue deadline can wait that interval plus
+# scan work and scheduling time. It refreshes the readiness heartbeat about once
 # per second, far inside the probe's 10-second freshness bound. The stale
 # sweep, whose state preparation also re-applies the queue directories' 0700
 # modes, runs at startup and then at most every 60 seconds, never more rarely
