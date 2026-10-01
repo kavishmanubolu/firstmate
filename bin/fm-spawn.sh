@@ -3732,12 +3732,15 @@ else
             echo "warning: herdr presentation parent is absent or ambiguous; using the ordinary flat layout without projection" >&2
             spawn_herdr_presentation_order_lock_release
           else
-            # The display name is published BEFORE the journal, because every
+            # The display name is published after the journal is created, so a
+            # refused journal never rewrites the record an existing workspace
+            # was labeled from, and before the label is built, because every
             # later re-derivation of this label - restart discovery, reclaim,
             # startup cleanup - reads that record rather than the spawn
             # arguments, which are gone by then. An explicit name wins over the
             # automatic one. A failed record only falls back to the
             # task-id-derived label, so it never fails the spawn.
+            HERDR_PROJECTION_ID=$(fm_backend_herdr_projection_journal_create "$STATE" "$ID") || exit 1
             if [ "$DISPLAY_NAME_SET" -eq 1 ]; then
               HERDR_DISPLAY_NAME=$DISPLAY_NAME_ARG
             else
@@ -3747,7 +3750,6 @@ else
               fm_backend_herdr_projection_display_name_record \
                 "$STATE" "$ID" "$HERDR_DISPLAY_NAME" 2>/dev/null || true
             fi
-            HERDR_PROJECTION_ID=$(fm_backend_herdr_projection_journal_create "$STATE" "$ID") || exit 1
             HERDR_PROJECTION_LABEL=$(fm_backend_herdr_projection_workspace_label "$ID" "$HERDR_PROJECTION_ID" "$STATE")
             if ! FM_HOME="$HERDR_LABEL_HOME" fm_backend_herdr_projection_create_task \
               "$PROJ_ABS" "$HERDR_PROJECTION_LABEL" "$W"; then

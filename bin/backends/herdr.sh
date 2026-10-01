@@ -972,9 +972,8 @@ fm_backend_herdr_projection_workspace_label_binds_token() {  # <title> <projecti
 # fm_backend_herdr_projection_workspace_label_matches: does one candidate title
 # name this exact task and token under ANY label this grammar has produced?
 # Discovery re-derives a label from durable records, so it must accept both the
-# display-name label and the task-id-derived label. That keeps two cases working
-# instead of stranding them: a projection created before display names existed,
-# and one whose display-name record was removed after its workspace was labeled.
+# display-name label and the task-id-derived label, so a projection labeled
+# before display names existed stays discoverable instead of stranded.
 # The token still has to match exactly, so accepting a second title spelling
 # never widens which task a candidate can be attributed to.
 fm_backend_herdr_projection_workspace_label_matches() {  # <candidate> <task-id> <projection-id> [state-dir]
