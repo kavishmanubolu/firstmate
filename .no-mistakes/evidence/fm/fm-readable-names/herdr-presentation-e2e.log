@@ -1,0 +1,4 @@
+ok - real Herdr lab: an opted-out spawn retains the Stage 1 Herdr command sequence with zero ordering calls
+ok - real Herdr lab: a home that configured nothing is projected by default on herdr 0.9.0
+ok - real Herdr lab: every projected create, task-tab create, seeded prune, and move preserves active workspace and tab
+ok - real Herdr lab: persisted-focused seeded prune proceeds when no live client is attached
