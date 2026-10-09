@@ -1,0 +1,10 @@
+ok - host+hook: the successor a pass-through left keeps the home watched after its own close, and that close still reaches main
+ok - host+hook: the next park takes over the cycle a main-only pass-through left, so one arm owns it
+ok - host: an attended close whose main session cannot be identified reaches main, runs no engine turn, and keeps a watcher
+ok - host: a main-only pass-through leaves the successor watcher running and the close undelivered for main
+ok - host+hook: a successor close that lands during main's turn is delivered at the next turn end
+ok - host+hook: an attended main-only pass-through rewakes main and keeps its successor watcher
+rm: /private/var/folders/1f/788391hd3r163hytm56wc57m0000gn/T/fm-supervision-host.fFRAGR/hook-successor-close/state: Directory not empty
+rm: /private/var/folders/1f/788391hd3r163hytm56wc57m0000gn/T/fm-supervision-host.fFRAGR/hook-successor-close: Directory not empty
+rm: /private/var/folders/1f/788391hd3r163hytm56wc57m0000gn/T/fm-supervision-host.fFRAGR: Directory not empty
+bash tests/.nm-focus-host.sh  36.45s user 103.88s system 15% cpu 15:06.51 total

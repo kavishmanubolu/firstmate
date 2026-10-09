@@ -1,0 +1,3 @@
+not ok - successor rearm: the first close never reached the Stop hook: 1791553717	start	gen=host-86883-1791553710	primary=claude
+1791553786	pass-through	attended	main-only	signal: /private/var/folders/1f/788391hd3r163hytm56wc57m0000gn/T/fm-supervision-host.ozsOpT/hook-successor-rearm/state/demo.status
+exit=1

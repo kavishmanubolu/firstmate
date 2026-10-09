@@ -1,0 +1,4 @@
+ok - host+hook: the next park takes over the cycle a main-only pass-through left, so one arm owns it
+ok - host+hook: a successor close that lands during main's turn is delivered at the next turn end
+ok - host+hook: the successor a pass-through leaves for main survives the hook's process group teardown
+bash tests/.nm-sel-host.test.sh  19.84s user 55.88s system 19% cpu 6:25.32 total

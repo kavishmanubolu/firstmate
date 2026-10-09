@@ -1,0 +1,6 @@
+ok - watch-arm: an arm left for main re-arms in place after its own close while the record names it
+ok - watch-arm: an arm attached to a left arm reports the close that arm re-armed past
+ok - watch-arm: an attached arm follows a non-arm parent's next watcher instead of reporting its close
+ok - watch-arm: an attached arm reports the wake its cycle delivered instead of a false failure
+ok - watch-arm: --take-over owns a fresh cycle without a recovery wake and still surfaces queued work
+bash tests/.nm-sel-arm.test.sh  16.44s user 49.61s system 16% cpu 6:51.01 total

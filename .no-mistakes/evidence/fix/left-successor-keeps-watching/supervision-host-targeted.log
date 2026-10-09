@@ -1,0 +1,4 @@
+ok - host+hook: the successor a pass-through left keeps the home watched after its own close, and that close still reaches main
+ok - host: an attended close whose main session cannot be identified reaches main, runs no engine turn, and keeps a watcher
+not ok - takeover: the record of the arm left for main outlived the take-over: 84553	Fri Oct  9 17:15:57 2026     bash /private/var/folders/1f/788391hd3r163hytm56wc57m0000gn/T/fm-supervision-host.XxMBXq/hook-takeover/bin/fm-watch-arm.sh
+bash tests/.nm-sel-host.test.sh  16.02s user 45.23s system 14% cpu 6:51.95 total

@@ -1,0 +1,3 @@
+not ok - the left arm ended at its own close, leaving no watcher: watcher: started pid=75785 (beacon fresh)
+signal: /private/var/folders/1f/788391hd3r163hytm56wc57m0000gn/T/fm-watch-arm-tests.nL1meu/left-arm-rearms/state/demo.status
+exit=1

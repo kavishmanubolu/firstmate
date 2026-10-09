@@ -1,0 +1,24 @@
+== lab home: /var/folders/1f/788391hd3r163hytm56wc57m0000gn/T//fm-lab.xmz6tf
+== left arm pid=99369, watcher W1=99503 (ppid 99369)
+== attached plain arm pid=327 output so far:
+== close 1: write a status change
+== after close 1: lock holder W2=11262 ppid=99369 ; left arm alive: yes
+== attached arm exit=0 output:
+   watcher: already running pid 99503
+   watcher: attached pid=99503 (beacon 4s)
+   signal: /var/folders/1f/788391hd3r163hytm56wc57m0000gn/T//fm-lab.xmz6tf/state/demo.status
+== left arm output:
+   watcher: started pid=99503 (beacon fresh)
+   signal: /var/folders/1f/788391hd3r163hytm56wc57m0000gn/T//fm-lab.xmz6tf/state/demo.status
+   watcher: started pid=11262 (beacon fresh) recovery-generation=99503.1791553775.qdbG3X
+== wake queue:
+   1791553773	1	signal	demo.status	signal: /var/folders/1f/788391hd3r163hytm56wc57m0000gn/T//fm-lab.xmz6tf/state/demo.status
+   1791553778	2	signal	demo.status	signal: /var/folders/1f/788391hd3r163hytm56wc57m0000gn/T//fm-lab.xmz6tf/state/demo.status
+== close 2 (re-arm count now 20 = cap): status change
+== left arm ended at the cap, exit=0
+== cycle exit ledger tail:
+   arm_pid=327	watcher_pid=692	origin=started	started_at=1791553749	ended_at=1791553754	exit_code=0	signal=none	reason=unexpected-clean-exit	beacon_age=1	lock_before=pid:99503|identity:none	lock_after=pid:99503|identity:Fri Oct  9 17:49:05 2026     bash /Users/kavishmanubolu/.no-mistakes/worktrees/6596e1eb05d6/01M4GAH8HYVT51PC82FK31RRBX/bin/fm-watch.sh	successor=attached:99503
+   arm_pid=99369	watcher_pid=99503	origin=started	started_at=1791553745	ended_at=1791553786	exit_code=0	signal=none	reason=actionable-signal	beacon_age=32	lock_before=pid:99503|identity:Fri Oct  9 17:49:05 2026     bash /Users/kavishmanubolu/.no-mistakes/worktrees/6596e1eb05d6/01M4GAH8HYVT51PC82FK31RRBX/bin/fm-watch.sh	lock_after=pid:none|identity:none	successor=started:11262
+   arm_pid=327	watcher_pid=99503	origin=attached	started_at=1791553759	ended_at=1791553801	exit_code=unknown	signal=unknown	reason=attached-delivered-wake	beacon_age=5	lock_before=pid:99503|identity:Fri Oct  9 17:49:05 2026     bash /Users/kavishmanubolu/.no-mistakes/worktrees/6596e1eb05d6/01M4GAH8HYVT51PC82FK31RRBX/bin/fm-watch.sh	lock_after=pid:11262|identity:Fri Oct  9 17:49:50 2026     bash /Users/kavishmanubolu/.no-mistakes/worktrees/6596e1eb05d6/01M4GAH8HYVT51PC82FK31RRBX/bin/fm-watch.sh	successor=none
+   arm_pid=99369	watcher_pid=11262	origin=started	started_at=1791553790	ended_at=1791553830	exit_code=0	signal=none	reason=actionable-signal	beacon_age=23	lock_before=pid:11262|identity:Fri Oct  9 17:49:50 2026     bash /Users/kavishmanubolu/.no-mistakes/worktrees/6596e1eb05d6/01M4GAH8HYVT51PC82FK31RRBX/bin/fm-watch.sh	lock_after=pid:none|identity:none	successor=none
+== lab removed: yes
